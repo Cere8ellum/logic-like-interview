@@ -1,0 +1,16 @@
+@use "sass:map";
+@import "../../../assets/styles/variables.scss";
+
+.wrapper {
+  width: 264px;
+  min-height: 234px;
+  border: 1px #cfcfe4 solid;
+  border-radius: 18px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+
+  span {
+    padding: 12px;
+  }
+}
