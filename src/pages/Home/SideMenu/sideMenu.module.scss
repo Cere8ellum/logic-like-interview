@@ -1,16 +1,31 @@
 @use "sass:map";
 @import "../../../assets/styles/variables.scss";
 
+$padding: 12px;
+
 .wrapper {
   width: 264px;
   min-height: 234px;
+  height: min-content;
   border: 1px #cfcfe4 solid;
   border-radius: 18px;
-  padding: 12px;
+  padding: $padding;
   display: flex;
   flex-direction: column;
 
   span {
-    padding: 12px;
+    padding: $padding;
+    box-sizing: border-box;
+
+    // Добавил от себя
+    &:hover {
+      cursor: pointer;
+      box-shadow: inset 0px 0px 0px 2px #cfcfe4;
+    }
+
+    .active {
+      background-color: #5FBF77;
+      border-radius: $padding;
+    }
   }
 }
