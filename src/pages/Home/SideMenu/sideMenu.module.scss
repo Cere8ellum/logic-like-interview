@@ -4,7 +4,6 @@
 $padding: 12px;
 
 .wrapper {
-  width: 264px;
   min-height: 234px;
   height: min-content;
   border: 1px #cfcfe4 solid;
@@ -13,19 +12,33 @@ $padding: 12px;
   display: flex;
   flex-direction: column;
 
+  // Добавил от себя, т.к. не нашёл в в ТЗ дизайна на меньшее расширение
+  @media screen and (max-width: map.get($screens, md)) {
+    width: 100%;
+    text-align: center;
+  }
+
   span {
+    width: 240px;
     padding: $padding;
     box-sizing: border-box;
-
     // Добавил от себя
+    transition: all 0.2s ease-in-out;
+
     &:hover {
       cursor: pointer;
-      box-shadow: inset 0px 0px 0px 2px #cfcfe4;
+      scale: 1.1;
     }
 
-    .active {
-      background-color: #5FBF77;
-      border-radius: $padding;
+    // Добавил от себя, т.к. не нашёл в в ТЗ дизайна на меньшее расширение
+    @media screen and (max-width: map.get($screens, md)) {
+      width: 100%;
     }
+  }
+
+  .active {
+    background-color: #5fbf77;
+    color: #ffffff;
+    border-radius: $padding;
   }
 }

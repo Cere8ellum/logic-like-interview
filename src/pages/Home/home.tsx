@@ -1,35 +1,35 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import * as styles from "./home.module.scss";
 import { fetchData } from "../../core/api/api";
-import { TData, TSortedData } from "../../core/types/TData";
+import { TData } from "../../core/types/TData";
 import SideMenu from "./SideMenu/sideMenu";
+import Content from "./Content/content";
 
-function sortByTags(data: TData[]) {
-  return data.reduce((acc, next) => {
-    // Перебрать все тэги, и поместить карточку в соответствующий ключ по тэгу в коллекции
-    for (let i = 0; i <= next.tags.length - 1; i++) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { tags, ...rest } = next;
-      const tag = next.tags[i];
-
-      const cardsInSet = acc.get(tag);
-      // Если тэг уже есть в коллекции (значит туда уже что-то добавлено ранее) - добавить в него карточку
-      // Иначе - - добавить тэг, а затем в него карточку
-      cardsInSet ? acc.set(tag, [...cardsInSet, rest]) : acc.set(tag, [rest]);
-    }
-
-    return acc;
-  }, new Map<string, Omit<TData, "tags">[]>());
+function filterByTag(data: TData[], tag: string) {
+  return data.filter((v) => v.tags.includes(tag));
 }
 
-export default function Home() {
+function getMenu(data: TData[], allItemsLabel: string) {
+  const notUniqueTagsArray = data.reduce((acc, next) => {
+    acc.push(...next.tags);
+    return acc;
+  }, [] as string[]);
+
+  // Вернуть уникальные
+  const unique = Array.from(new Set(notUniqueTagsArray));
+  // Добавить пункт Все темы
+  unique.unshift(allItemsLabel);
+
+  return unique;
+}
+
+const ALL_COURCES_ID = "Все темы";
+
+export default memo(function Home() {
   const [data, setData] = useState<TData[]>([]);
-  const [shownCources, setShownCources] = useState<TSortedData | null>(null)
-  console.log(data);
+  const [shownCources, setShownCources] = useState<number>(0);
 
-  const sortedTags = useMemo(() => sortByTags(data), [data]);
-
-  console.log("tags", sortedTags);
+  const sideMenu = useMemo(() => getMenu(data, ALL_COURCES_ID), [data]);
 
   useEffect(() => {
     fetchData().then((res) => {
@@ -38,13 +38,17 @@ export default function Home() {
   }, []);
   return (
     <div className={styles.content}>
-      <SideMenu data={sortedTags} cb={setShownCources} />
-      <section className={styles.cards}>{shownCources === null ? data.map((v, k) => {
-        return <div key={k} className={styles.card} style={{ backgroundColor: v.bgColor }}>
-          <div className={styles.body}><img src={v.image} /></div>
-          <div className={styles.footer}>{v.name}</div>
-        </div>
-      }) : "asdda"}</section >
-    </div >
+      <SideMenu
+        data={sideMenu}
+        activeItemIndex={shownCources}
+        cb={setShownCources}
+      />
+      <Content
+        data={
+          // 0 - Все темы
+          shownCources === 0 ? data : filterByTag(data, sideMenu[shownCources])
+        }
+      />
+    </div>
   );
-}
+});

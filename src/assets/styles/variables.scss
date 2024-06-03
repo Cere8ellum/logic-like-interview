@@ -61,3 +61,9 @@ $fontSize: 24px;
     font-size: $fontMax;
   }
 }
+
+$screens: (
+  lg: 1083px,
+  md: 760px,
+  sm: 480px,
+);

@@ -4,49 +4,12 @@
 $gap: 24px;
 
 .content {
+  max-width: 1503px;
   display: flex;
-  justify-content: flex-start;
   gap: $gap;
 
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: $gap;
-    width: 100%;
-
-    .card {
-      min-width: 210px;
-      width: 100%;
-      height: 210px;
-      border-radius: 18px;
-      box-shadow: 0px 10px 13px -4px #23235F30;
-      // Добавил от себя
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-
-      &:hover {
-        scale: 1.1;
-        transform: rotate(-5deg);
-      }
-
-      .body {
-        height: 162px;
-
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-        }
-      }
-
-      .footer {
-        min-height: 48px;
-        padding: 12px 18px 18px 18px;
-        gap: 10px;
-        opacity: 0px;
-        text-align: left;
-        background-color: #FFFFFF;
-      }
-    }
+  // Добавил от себя, т.к. не нашёл в в ТЗ дизайна на меньшее расширение
+  @media screen and (max-width: 760px) {
+    flex-direction: column;
   }
 }

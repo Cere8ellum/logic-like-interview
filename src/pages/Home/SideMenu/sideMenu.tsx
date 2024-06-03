@@ -1,23 +1,25 @@
-import React, { Dispatch, SetStateAction, useMemo } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import * as styles from "./sideMenu.module.scss";
-import { TSortedData } from "../../../core/types/TData";
 
-type TProps = { data: TSortedData; cb: Dispatch<SetStateAction<TSortedData | null>> };
+type TProps = {
+  data: string[];
+  activeItemIndex: number;
+  cb: Dispatch<SetStateAction<number>>;
+};
 
-
-
-
-export default function SideMenu({ data }: TProps) {
+const SideMenu = ({ data, activeItemIndex, cb }: TProps) => {
   return (
     <div className={styles.wrapper}>
-      <span data-id="all-categories">Все темы</span>
-      {Array.from(data).map((v, k) => {
+      {data.map((v, k) => {
+        const active = k === activeItemIndex ? styles.active : "";
         return (
-          <span data-id={v[0]} key={k} onClick={() => ""}>
-            {v[0]}
+          <span className={active} key={k} onClick={() => cb(k)}>
+            {v}
           </span>
-        )
+        );
       })}
     </div>
   );
-}
+};
+
+export default SideMenu;
